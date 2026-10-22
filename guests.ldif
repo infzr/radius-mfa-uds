@@ -1,0 +1,14 @@
+dn: ou=Guests,dc=utamadigital,dc=co,dc=id
+objectClass: organizationalUnit
+ou: Guests
+
+dn: uid=tamu01,ou=Guests,dc=utamadigital,dc=co,dc=id
+objectClass: inetOrgPerson
+objectClass: posixAccount
+cn: Tamu Satu
+sn: Tamu
+uid: tamu01
+uidNumber: 20001
+gidNumber: 20001
+homeDirectory: /nonexistent
+userPassword: {SSHA}GANTI_DENGAN_HASIL_SLAPPASSWD

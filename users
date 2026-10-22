@@ -1,0 +1,23 @@
+# =============================================================
+#  /etc/freeradius/3.0/users
+#  Pemetaan identitas -> metode autentikasi -> atribut otorisasi
+# =============================================================
+
+# --- Admin Network: Password + TOTP (PAM), privilege 15 ---
+adminnet    Auth-Type := PAM
+            Cisco-AVPair = "shell:priv-lvl=15",
+            Reply-Message = "Selamat datang, Admin Network UDS"
+
+# --- Staf Internal: Password + TOTP (PAM), privilege 1 ---
+staf01      Auth-Type := PAM
+            Cisco-AVPair = "shell:priv-lvl=1",
+            Reply-Message = "Selamat datang, Staf Internal UDS"
+
+# --- Tamu: Password via bind OpenLDAP, privilege 0 ---
+tamu01      Auth-Type := LDAP
+            Cisco-AVPair = "shell:priv-lvl=0",
+            Reply-Message = "Selamat datang, Tamu UDS"
+
+# --- Penolakan eksplisit untuk identitas lain ---
+DEFAULT     Auth-Type := Reject
+            Reply-Message = "Akses ditolak: identitas tidak terdaftar"

@@ -1,0 +1,7 @@
+# =============================================================
+#  /etc/pam.d/radiusd
+#  Tumpukan PAM untuk FreeRADIUS: Password + TOTP
+# =============================================================
+auth    required    pam_google_authenticator.so forward_pass secret=/etc/freeradius/3.0/totp/${USER}.ga user=freerad
+auth    required    pam_unix.so use_first_pass
+account required    pam_unix.so

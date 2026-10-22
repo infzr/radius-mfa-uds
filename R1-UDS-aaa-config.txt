@@ -1,0 +1,51 @@
+! Konfigurasi AAA/RADIUS pada router R1-UDS (Cisco IOS)
+! Tempel pada mode konfigurasi global (configure terminal)
+hostname R1-UDS
+ip domain-name utamadigital.co.id
+crypto key generate rsa modulus 2048
+ip ssh version 2
+ip ssh time-out 60
+ip ssh authentication-retries 3
+!
+username localadmin privilege 15 algorithm-type scrypt secret Fb@ckL0cal#2026
+enable secret En@ble#UDS2026
+!
+aaa new-model
+!
+radius server FREERADIUS-UDS
+ address ipv4 192.168.10.10 auth-port 1812 acct-port 1813
+ key Rad1us!UDS#2026
+ timeout 10
+ retransmit 2
+!
+aaa group server radius GRP-RADIUS-UDS
+ server name FREERADIUS-UDS
+ ip radius source-interface GigabitEthernet0/0
+!
+aaa authentication login VTY-AUTH group GRP-RADIUS-UDS local
+aaa authentication login CON-AUTH local
+aaa authentication enable default enable
+aaa authorization exec VTY-AUTHZ group GRP-RADIUS-UDS local
+aaa accounting exec VTY-ACCT start-stop group GRP-RADIUS-UDS
+aaa accounting commands 15 VTY-CMD start-stop group GRP-RADIUS-UDS
+!
+access-list 10 permit 192.168.20.0 0.0.0.255
+access-list 10 deny any log
+!
+line vty 0 4
+ login authentication VTY-AUTH
+ authorization exec VTY-AUTHZ
+ accounting exec VTY-ACCT
+ accounting commands 15 VTY-CMD
+ access-class 10 in
+ transport input ssh
+ exec-timeout 5 0
+line con 0
+ login authentication CON-AUTH
+!
+login block-for 120 attempts 3 within 60
+login delay 2
+login on-failure log
+login on-success log
+end
+write memory

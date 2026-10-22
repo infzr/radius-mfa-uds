@@ -1,0 +1,4 @@
+# Rahasia TOTP tidak boleh diunggah
+*.ga
+totp/
+*.secret
